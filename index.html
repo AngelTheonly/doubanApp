@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<style>
+			html,
+			body {
+				background-color: #eee;
+			}
+			
+			.wrap_search {
+				background-color: #fff;
+				height: 30px;
+				border-radius: 5px;
+				text-align: center;
+			}
+			
+			.item-img {
+				width: 60px;
+				height: 90px;
+				margin-right: 10px;
+			}
+			
+			.mui-bar-nav {
+				box-shadow: none;
+			}
+			
+			.mui-table-view {
+				position: relative;
+				margin-top: 0;
+				margin-bottom: 0;
+				padding-left: 0;
+				list-style: none;
+				background-color: #eee;
+				padding: 10px;
+				top: 44px;
+			}
+			
+			.mui-table-view-cell {
+				position: relative;
+				overflow: hidden;
+				padding: 11px 15px;
+				-webkit-touch-callout: none;
+				background: #fff;
+				margin-bottom: 10px;
+				border-radius: 5px;
+				box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+			}
+			
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.mui-pull-bottom-pocket {
+				top: 44px;
+			}
+			
+			.mui-table-view:before {
+				height: 0px;
+			}
+			
+			.mui-table-view:after {
+				height: 0px;
+			}
+			
+			.shangying {
+				height: 30px;
+				width: 100px;
+				line-height: 30px;
+				margin-bottom: 10px;
+				color: #fff;
+				background: rgba(240, 20, 20, .8);
+				border-radius: 5px 0 0 5px;
+				position: relative;
+				padding-left: 15px;
+			}
+			
+			.shangying:after {
+				display: block;
+				content: "";
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				width: 0;
+				height: 0;
+				border-top: 15px solid #eee;
+				border-bottom: 15px solid #eee;
+				border-left: 15px solid transparent;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #FF0000;">
+			<h1 class="mui-title" style="color: #fff;">电影</h1>
+		</header>
+		<div style="background-color: #FF0000;padding: 15px;position: fixed;z-index: 1;left: 0;top: 44px;width: 100%;">
+			<div class="wrap_search">
+				<span class="mui-icon mui-icon-search" style="line-height: 30px; color: #AAAAAA;font-size: 16px;"></span>
+				<span style="line-height: 30px;color: #AAAAAA; font-size: 14px;">电影/电视剧/影人</span>
+			</div>
+		</div>
+
+		<div id="refreshContainer" class="mui-content" style="background: #eee;">
+
+			<ul class="mui-table-view" id="movies">
+				<div class="dark-medium shangying">
+					即将上映
+				</div>
+				<li class="mui-table-view-cell" v-for="item in movies" :data-ins="item.id">
+					<img class="mui-pull-left item-img" :src="item.cover" />
+					<div class="mui-ellipsis dark-big">
+						{{item.title}}
+					</div>
+					<div class="mui-ellipsis">
+						<span class="gray-small">{{item.genres}}</span>&nbsp;
+						<span v-if="item.score>0" class="orange-small">{{item.score}}分</span>
+						<span v-else class="orange-small">暂无评分</span>
+					</div>
+					<div class="mui-ellipsis gray-small">
+						导演：{{item.directors}}
+					</div>
+					<div class="mui-ellipsis gray-small">
+						主演：{{item.casts}}
+					</div>
+				</li>
+			</ul>
+
+		</div>
+
+		<script src="js/util.js"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var data_movies = new Vue({
+				el: '#movies',
+				data: {
+					movies: []
+				}
+			})
+
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能
+				statusBarBackground: "#FF0000",
+				pullRefresh: {
+					container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down: {
+						auto: false, //可选,默认false.首次加载自动下拉刷新一次
+						callback: refreshData //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					},
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: true, //可选,默认false.自动上拉加载一次
+						contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: loadMoreData //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+
+			//刷新数据，重新调用接口
+			function refreshData() {
+				//请求热映列表接口
+				mui.getJSON('https://api.douban.com/v2/movie/in_theaters', {
+					start: 0,
+					count: 10
+				}, function(resp) {
+					data_movies.movies.splice(0, data_movies.movies.length);
+					data_movies.movies = data_movies.movies.concat(convert(resp.subjects));
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+					mui('#refreshContainer').pullRefresh().refresh(true);
+				});
+			}
+			//请求下一页数据
+			function loadMoreData() {
+				//请求热映列表接口
+				mui.getJSON('https://api.douban.com/v2/movie/in_theaters', {
+					start: data_movies.movies.length,
+					count: 10
+				}, function(resp) {
+					data_movies.movies = data_movies.movies.concat(convert(resp.subjects));
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(data_movies.movies.length > resp.total);
+				});
+			}
+
+			mui.plusReady(function() {
+				void plus.navigator.setStatusBarBackground('#FF0000');
+				var self = plus.webview.currentWebview();
+				// 创建子webview窗口 并初始化
+				var aniShow = {};
+				util.initSubpage(aniShow);
+
+				var nview = plus.nativeObj.View.getViewById('tabBar'),
+					activePage = plus.webview.currentWebview(),
+					targetPage,
+					subpages = util.options.subpages,
+					pageW = window.innerWidth,
+					currIndex = 0;
+
+				/**
+				 * 根据判断view控件点击位置判断切换的tab
+				 */
+				nview.addEventListener('click', function(e) {
+					var clientX = e.clientX;
+					if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
+						currIndex = 0;
+					} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.45)) {
+						currIndex = 1;
+					} else if(clientX > parseInt(pageW * 0.45) && clientX <= parseInt(pageW * 0.8)) {
+						currIndex = 2;
+					} else {
+						currIndex = 3;
+					}
+					
+					// 匹配对应tab窗口	
+					if(currIndex > 0) {
+						targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);
+					} else {
+						targetPage = plus.webview.currentWebview();
+					}
+
+					if(targetPage == activePage) {
+						return;
+					}
+
+					if(currIndex !== 3) {
+						//底部选项卡切换
+						util.toggleNview(currIndex);
+						// 子页面切换
+						util.changeSubpage(targetPage, activePage, aniShow);
+						//更新当前活跃的页面
+						activePage = targetPage;
+					} else {
+						//底部选项卡切换
+						util.toggleNview(currIndex);
+						// 子页面切换
+						util.changeSubpage(targetPage, activePage, aniShow);
+						//更新当前活跃的页面
+						activePage = targetPage;
+//						//第四个tab 打开新窗口
+//						plus.webview.open('html/new-webview.html', 'new', {}, 'slide-in-right', 500);
+					}
+				});
+			});
+
+			//给搜索框添加点击事件
+			mui('.wrap_search')[0].addEventListener('tap', function() {
+				mui.openWindow({
+					id:'search',
+					url:'./html/search.html'
+				})
+
+			})
+		
+			//预加载电影详情页面
+
+			mui(".mui-table-view").on('tap', '.mui-table-view-cell', function(item) {
+				//获取id
+				var id = this.getAttribute("data-ins")
+				var detailPage = mui.preload({
+					id: 'movie-detail',
+					url: './html/movie-detail.html'
+				});
+				mui.fire(detailPage, 'movieId', {
+					id: id
+				});
+				//打开
+				mui.openWindow({
+					id: 'movie-detail'
+				});
+			})
+			//数据转换
+			function convert(items) {
+				var newItems = [];
+				//遍历items
+				items.forEach(function(item) {
+					var genres = item.genres.toString().replace(/,/g, ' / ');
+					//导演
+					var directors = '';
+					for(var i = 0; i < item.directors.length; i++) {
+						directors += item.directors[i].name;
+						if(i != item.directors.length - 1) {
+							directors += ' / ';
+						}
+					}
+					//演员
+					var casts = '';
+					for(var i = 0; i < item.casts.length; i++) {
+						casts += item.casts[i].name;
+						if(i != item.casts.length - 1) {
+							casts += ' / ';
+						}
+					}
+
+					newItems.push({
+						id: item.id,
+						title: item.title,
+						genres: genres,
+						cover: item.images.large,
+						score: item.rating.average,
+						directors: directors,
+						casts: casts
+					});
+				});
+
+				return newItems;
+			}
+		</script>
+	</body>
+
+</html>

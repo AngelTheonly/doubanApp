@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>new webview</title>
+		<script src="../js/mui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style type="text/css">
+			body {
+				background-color: #fff;
+			}
+			
+			.mui-bar-nav {
+				box-shadow: none;
+			}
+			
+			.swiper-container {
+				width: 100%;
+				height: 100vw;
+			}
+			
+			.swiper-slide {
+				width: 100%;
+				height: 100vw;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+			}
+			
+			.swiper-slide img {
+				width: 100%;
+				margin-top: 80px;
+			}
+			
+			.swiper-pagination-bullet-active {
+				background-color: #fff;
+			}
+			
+			.mui-badge {
+				padding: 4px 10px;
+				border-radius: 5px;
+			}
+			
+			.icon_img {
+				width: 30px;
+				height: 30px;
+				vertical-align: text-bottom;
+				margin-right: 5px;
+			}
+			
+			.icon_img-loo {
+				width: 20px;
+				height: 20px;
+				vertical-align: text-bottom;
+				margin-right: 5px;
+			}
+			
+			.se_botton {
+				margin-right: 5px;
+			}
+			
+			.se_botton:nth-child(odd) {
+				line-height: 1.2;
+				background: rgba(247, 174, 9, 0.5);
+				color: #9e7232;
+				border-color: #fff;
+				border-radius: 7px;
+				margin-bottom: 5px;
+			}
+			
+			.se_botton:nth-child(even) {
+				line-height: 1.2;
+				background: rgba(221, 82, 77, 0.4);
+				color: #8a3c3a;
+				border-color: #fff;
+				border-radius: 7px;
+				margin-bottom: 5px;
+			}
+			
+			.mui-table-view-cell:after {
+				height: 0.6px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #FF0000;">
+			<h1 class="mui-title" style="color: #fff;">个人资料</h1>
+		</header>
+		<div id="mydata" class="mui-content" style="background-color: #fff;">
+
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="item in list.bennrimg"><img :src="item.img" /></div>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+			</div>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<div class="dark-big">
+						<img class="icon_img" src="../img/icon1.png" /> {{list.name}}
+						<span class="mui-badge mui-badge-primary">♂{{list.age}}</span>
+						<span class="mui-badge mui-badge-success">{{list.xingzuo}}</span>
+					</div>
+					<p class="gray-small" style="margin-top: 5px;">{{list.focus}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="orange-small">个人签名</div>
+					<div class="dark-medium" style="margin-top: 10px;">
+						<img class="icon_img" src="../img/icon2.png" /> {{list.signature}}
+					</div>
+
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="orange-small">我的信息</div>
+					<div class="dark-medium" style="margin-top: 10px;">
+						<img class="icon_img-loo" src="../img/icon3.png" /> {{list.industry}}
+					</div>
+					<div class="dark-medium" style="margin-top: 10px;">
+						<img class="icon_img-loo" src="../img/icon4.png" /> {{list.pfoal}}
+					</div>
+					<div class="dark-medium" style="margin-top: 10px;">
+						<img class="icon_img-loo" src="../img/icon5.png" /> {{list.map}}
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="orange-small">我的标签</div>
+					<div class="dark-medium" style="margin-top: 10px;">
+						<img class="icon_img-loo mui-pull-left" src="../img/icon6.png" />
+						<div style="margin-left: 30px;">
+							<button v-for="item in list.laber" class="se_botton" type="button" class="mui-btn mui-btn-danger">{{item.text}}</button>
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="orange-small">工作经历</div>
+					<div class="dark-medium" style="margin-top: 10px;">
+						<img class="icon_img-loo" src="../img/icon7.png" /> {{list.company}}
+					</div>
+
+					<P class="gray-small">{{list.pfoal}}</P>
+
+					<P class="gray-small">工作内容：</P>
+					<div style="margin-left: 30px;">
+						<p class="gray-small" v-for="item in list.work_cont">{{item.cont}}</p>
+					</div>
+				</li>
+			</ul>
+
+		</div>
+
+		<script src="../js/swiper-3.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init();
+
+			//vue对象
+			var myData = new Vue({
+				el: '#mydata',
+				data: {
+					list: []
+				}
+			})
+
+			mui.ready(function() {
+
+				mui.getJSON('../personal.json', {}, function(resp) {
+					myData.list = resp.data
+					console.log(myData.list.bennrimg)
+				})
+				var mySwiper = new Swiper('.swiper-container', {
+					pagination: '.swiper-pagination'
+				})
+			})
+		</script>
+	</body>
+
+</html>
