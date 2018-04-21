@@ -10,7 +10,7 @@
 
 ## 应用截图
 
-
+魏帅
 ![截图](http://img-cdn-qiniu.dcloud.net.cn/uploads/article/20170623/04c03ba9ad4afa7d11735e52c771cf94.png)
 
 
