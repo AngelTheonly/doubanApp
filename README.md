@@ -1,0 +1,2 @@
+# doubanApp
+这是一个基于mui框架开发调用豆瓣网API数据，使用vue做数据模式渲染，HBuilder打包生成app的一个项目
