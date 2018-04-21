@@ -1,0 +1,44 @@
+{
+	"data": {
+		"bennrimg": [
+			{
+				"img": "../img/bnenr4.jpg"
+			}, {
+				"img": "../img/bnenr5.jpg"
+			}, {
+				"img": "../img/bnenr2.jpg"
+			}, {
+				"img": "../img/bnenr3.jpg"
+			}, {
+				"img": "../img/bnenr1.jpg"
+			}
+		],
+		"name": "魏小帅丶",
+		"age": "22",
+		"xingzuo": "天秤座",
+		"focus": "专注于微信小程序、web前端开发、移动端网页开发。",
+		"signature": "同学上山不易中有坚持，才能看到好风光。",
+		"industry": " IT/互联网/移动互联网/H5",
+		"pfoal": "web前端工程师",
+		"map": "西安市莲湖区四府街",
+		"laber": [
+			{
+				"text": "专注"
+			}, {
+				"text": "偏执"
+			}, {
+				"text": "认真"
+			}, {
+				"text": "爱学习"
+			}, {
+				"text": "加班狂魔"
+			}
+		],
+		"company":"西安别具一格科技有限公司",
+	    "work_cont":[
+	         {"cont":"1.小程序项目的前端开发研制。"},
+	         {"cont":"2.MUI/VUE/JQ混合框架手机移动网页项目开发。"},
+	         {"cont":"3.使用boorstrap框架配合JQ框架进行pc端网页开发。"}
+	    ]
+	}
+}

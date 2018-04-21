@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style>
+			html,
+			body {
+				background-color: #eee;
+			}
+			
+			.title {
+				padding: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+				background-color: #fff;
+			}
+			
+			.group {
+				display: flex;
+				flex-flow: row nowrap;
+				flex: 1 1 0;
+				height: 150px;
+				text-align: center;
+			}
+			
+			.item {
+				width: 50%;
+				height: 100%;
+				padding: 15px;
+			}
+			
+			.billboard {
+				width: 100%;
+				height: 100%;
+				line-height: 100%;
+				border-radius: 5px;
+				display: table;
+			}
+			
+			.billboard-title {
+				color: #fff;
+				font-size: 18px;
+				display: table-cell;
+				vertical-align: middle;
+			}
+			
+			.mui-bar-nav {
+				box-shadow: none;
+			}
+			
+			.mui-table-view {
+				position: relative;
+				margin-top: 0;
+				margin-bottom: 0;
+				padding-left: 0;
+				list-style: none;
+				background-color: #eee;
+				padding: 10px;
+			}
+			
+			.mui-table-view-cell {
+				position: relative;
+				overflow: hidden;
+				padding: 11px 15px;
+				-webkit-touch-callout: none;
+				background: #fff;
+				margin-bottom: 10px;
+				border-radius: 5px;
+				box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+			}
+			
+			.mui-table-view:before {
+				height: 0px;
+			}
+			
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.shangying {
+				height: 30px;
+				width: 100px;
+				line-height: 30px;
+				margin: 0 auto 8px;
+				color: #fff;
+				background: rgba(240, 20, 20, .8);
+				border-radius: 5px 0 0 5px;
+				position: relative;
+				padding-left: 15px;
+			}
+			
+			.shangying:after {
+				display: block;
+				content: "";
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				width: 0;
+				height: 0;
+				border-top: 15px solid #eee;
+				border-bottom: 15px solid #eee;
+				border-left: 15px solid transparent;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #FF0000;">
+			<h1 class="mui-title" style="color: #fff;">榜单</h1>
+		</header>
+		<div class="mui-content" style="background: #eee;">
+			<div id="slider" class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop">
+					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img src="../images/banner3.jpg">
+						</a>
+					</div>
+					<!-- 第一张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="../images/banner1.jpg">
+						</a>
+					</div>
+					<!-- 第二张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="../images/banner2.jpg">
+						</a>
+					</div>
+					<!-- 第三张 -->
+					<div class="mui-slider-item">
+						<a href="#">
+							<img src="../images/banner3.jpg">
+						</a>
+					</div>
+					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="#">
+							<img src="../images/banner1.jpg">
+						</a>
+					</div>
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+			<div class="group">
+				<div class="item">
+					<div id="billboard_top" class="billboard" style="background: linear-gradient(#941AE6,#f1e0fc);">
+						<span class="billboard-title">豆瓣Top250</span>
+					</div>
+				</div>
+				<div class="item">
+					<div id="billboard_box" class="billboard" style="background: linear-gradient(#3370cc,#cee1fd);">
+						<span class="billboard-title">北美票房榜</span>
+					</div>
+				</div>
+			</div>
+			<div class="dark-medium shangying" style="margin-left: 15px;">
+				即将上映
+			</div>
+			<ul id="movies" class="mui-table-view">
+				<li class="mui-table-view-cell" v-for="item in movies" :data-ins="item.id">
+					<img :src="item.cover" class="mui-pull-left" style="width: 60px;height: 90px;margin-right: 10px;" />
+					<div>
+						<div class="dark-big mui-ellipsis">{{item.title}}</div>
+						<div class="mui-ellipsis">
+							<span class="gray-small">{{item.genres}}</span>&nbsp;
+							<span class="orange-small" v-if="item.score>0">{{item.score}}分</span>
+							<span class="orange-small" v-else>暂无评分</span>
+						</div>
+						<div class="gray-small mui-ellipsis">
+							导演：{{item.directors}}
+						</div>
+						<div class="gray-small mui-ellipsis">
+							主演：{{item.casts}}
+						</div>
+					</div>
+					<button type="button" class="mui-btn mui-btn-warning mui-btn-outlined">想看</button>
+				</li>
+				
+			</ul>
+		</div>
+		<div class=""></div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init({
+
+			});
+			mui('.mui-slider').slider({
+				interval: 3000 //自动轮播图
+			});
+			//vue 对象，数据
+			var data_movies = new Vue({
+				el:'#movies',
+				data:{
+					movies:[]
+				}
+			});
+			
+			mui.getJSON('https://api.douban.com/v2/movie/coming_soon',{
+				start:0,
+				count:10
+			},function(resp){
+				var lost = convert(resp.subjects)
+				data_movies.movies = lost
+			})
+			
+			//数据格式转换
+			function convert(items){
+				var newItems = [];
+				//遍历
+				items.forEach(function(item){
+					var genres = item.genres.toString().replace(/,/g, ' / ');
+					//导演
+					var directors = '';
+					for (var i = 0;i<item.directors.length;i++) {
+						directors += item.directors[i].name;
+						if(i!= item.directors.length-1){
+							directors += '/';
+						}
+					}
+					var casts = '';
+					for(var i = 0; i < item.casts.length; i++) {
+						casts += item.casts[i].name;
+						if(i != item.casts.length - 1) {
+							casts += ' / ';
+						}
+					}
+					newItems.push({
+						id:item.id,
+						title:item.title,
+						genres:genres,
+						cover:item.images.large,
+						score:item.rating.average,
+						directors:directors,
+						casts:casts
+					});
+					
+				})
+				return newItems
+			}
+			
+			mui(".mui-table-view").on('tap', '.mui-table-view-cell', function(item) {
+				//获取id
+				var id = this.getAttribute("data-ins")
+				var detailPage = mui.preload({
+					id: 'movie-detail',
+					url: './movie-detail.html'
+				});
+				mui.fire(detailPage, 'movieId', {
+					id: id
+				});
+				//打开
+				mui.openWindow({
+					id: 'movie-detail'
+				});
+			})
+			
+			//给top250添加点击事件
+			mui('#billboard_top')[0].addEventListener('tap',function(){
+				mui.openWindow({
+					url:'./billboard-top.html',
+					id:'billboard-top',
+					waiting:{
+						autoShow:true,
+						title:'正在加载...'
+					}
+				})
+			})
+			
+			
+			//给北美添加点击事件
+			mui('#billboard_box')[0].addEventListener('tap',function(){
+				mui.openWindow({
+					url:'./billboard-box.html',
+					id:'billboard-box',
+					waiting:{
+						autoShow:true,
+						title:'正在加载...'
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

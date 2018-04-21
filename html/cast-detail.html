@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<style type="text/css">
+			.mui-bar-nav{
+				box-shadow: none;
+			}
+			.top_image_block {
+				display: flex;
+				height: 240px;
+				justify-content: center;
+				align-items: center;
+				background-color: #000;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			.filter {
+				width: 100%;
+				height: auto;
+				filter: url(blur.svg#blur);
+				/* FireFox, Chrome, Opera */
+				-webkit-filter: blur(10px);
+				/* Chrome, Opera */
+				-moz-filter: blur(10px);
+				-ms-filter: blur(10px);
+				filter: blur(10px);
+				filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+				/* IE6~IE9 */
+				opacity: 0.8;
+			}
+			.dangqian_img {
+				width: 160px;
+				height: 240px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+			.yanyuan {
+				overflow-x: scroll;
+				white-space: nowrap;
+				padding-left: 15px;
+			}
+			
+			.yanyuan::-webkit-scrollbar {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body style="background: #fff;">
+		<header class="mui-bar mui-bar-nav" style="background-color: #757575;">
+			<a  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #fff;"></a>
+			<h1 class="mui-title" style="color: #fff;">影人</h1>
+		</header>
+		<div class="mui-content" style="background: #fff;">
+		    <div class="top_image_block">
+				<img class="filter" :src="cover" />
+				<img class="dangqian_img" data-preview-src="" data-preview-group="1" :src="cover" />
+			</div>
+			<div style="padding: 15px;">
+				<div class="dark-big">
+					{{name}}
+				</div>
+				<div class="gray-medium">
+					{{neName}}
+				</div>
+				<div class="gray-small">
+					个人简介
+				</div>
+				<div class="dark-medium">
+					{{summary}}
+				</div>
+			</div>
+			<div class="gray-small" style="margin-left: 15px;">
+					代表作品
+				</div>
+			<div class="yanyuan">
+				<div v-for="item in works" style="display: inline-block;" @click="open_detail(item)">
+					<img :src="item.subject.images.medium" style="width: 70px;height: 100px;margin-right: 10px;" />
+					<div class="dark-micro mui-ellipsis" style="width: 70px;text-align: center;">{{item.subject.title}}</div>
+					<div class="orange-small mui-ellipsis" style="width: 70px;text-align: center;line-height: 15px;">
+						{{item.subject.rating.average}}分
+					</div>
+				</div>
+			</div>	
+				
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+	    <script src="../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.previewImage();
+			function getDefaultData () {
+				return{
+					name:'',
+					enName:'',
+					cover:'',
+					summary:'',
+					works:[]
+				}
+			}
+			
+			//vue 对象
+			var data_detail = new Vue({
+				el:".mui-content",
+				data:getDefaultData(),
+				methods:{
+					resetData:function(){//重置页面数据
+						Object.assign(this.$data,getDefaultData());
+					}
+				}
+			})
+			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				self.addEventListener('hide',function(e){
+					window.scrollTo(0,0);//滚到顶部
+					data_detail.resetData();
+				})
+				plus.nativeUI.showWaiting('加载中',{
+					width:'100px',
+					height:'100px'
+				})
+//				获取接口数据
+				mui.getJSON('http://api.douban.com/v2/movie/celebrity/'+self.castId,{},function(resp){
+					data_detail.name = resp.name;
+					data_detail.enName = resp.name_en;
+					data_detail.cover = resp.avatars.large;
+					data_detail.summary = resp.name+'，'+resp.gender+'，'+resp.born_place;
+					data_detail.works = resp.works;
+					plus.nativeUI.closeWaiting();
+				})
+			})
+		</script>
+	</body>
+
+</html>

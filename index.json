@@ -1,0 +1,30 @@
+{
+	    
+		"list": [
+		     {
+				"id": 10,
+				"title": "活在当下，别在怀念过去或者憧憬未来中浪费掉你现在的生活。",
+				"thumb": [
+				   {"img":"http://scimg.jb51.net/allimg/160815/103-160Q51F245958.jpg"},
+				   {"img":"http://scimg.jb51.net/allimg/160510/14-160510095I4G9.jpg"},
+				   {"img":"http://uploads.sundxs.com/allimg/1706/19-1F621003214.jpg"}
+				],
+				"author": "魏小帅丶",
+				"avatar": "../images/brt.jpg",
+				"time": "2017-12-27"
+			},
+			 {
+				"id": 10,
+				"title": "必须不断汲取专业知识但不要以专家自居以专家自居的想法会损害产生新思想、运用新思想的能力",
+				"thumb": [
+				   {"img":"http://img.sinmeng.com/2017/02/06/8468-1F206102217.jpg"},
+				   {"img":"http://editerupload.eepw.com.cn/201409/14113759352758.jpg"},
+				   {"img":"http://upload.news.cecb2b.com/2013/0805/1375662017251.jpg"}
+				],
+				"author": "魏小帅丶",
+				"avatar": "../images/brt.jpg",
+				"time": "2017-12-28"
+			}
+		]	
+	
+}

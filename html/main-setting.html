@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #eee;
+			}
+			
+			.head {
+				height: 50vw;
+				background-color: #eee;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			.head>img {
+				width: 100%;
+				height: auto;
+				-webkit-filter: blur(2px);
+				/* Chrome, Opera */
+				-moz-filter: blur(2px);
+				-ms-filter: blur(2px);
+				filter: blur(2px);
+			}
+			
+			.portrait {
+				margin-left: 15px;
+				display: flex;
+				align-items: center;
+				position: relative;
+				z-index: 9;
+				margin-top: -50px;
+				float: right;
+				margin-right: 15px;
+				;
+			}
+			
+			.portrait div {
+				margin-right: 10px;
+				color: #fff;
+				font-size: 16px;
+				margin-bottom: 20px;
+			}
+			
+			.portrait img {
+				width: 80px;
+				height: 80px;
+				border: 2px #fff solid;
+				border-radius: 2px;
+				box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+			}
+			
+			.headxiang {
+				width: 50px;
+				height: 50px;
+			}
+			
+			.mui-table-view {
+				background-color: #eee;
+				float: left;
+			}
+			
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.mui-table-view:after {
+				height: 0;
+			}
+			
+			.mui-table-view-cell:after {
+				height: 0.5px;
+			}
+			
+			.mui-table-view-cell.mui-active {
+				background-color: #eee;
+			}
+			
+			.title_medium {
+				line-height: 30px;
+				text-align: center;
+				margin-left: 10px;
+				font-size: 16px;
+				color: #4a7eb7;
+			}
+			
+			.post_list {
+				margin-left: 60px;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: space-between;
+			}
+			
+			.img_list {
+				width: 85px;
+				height: 70px;
+				overflow: hidden;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #fff;
+				margin-bottom: 10px;
+			}
+			
+			.img_list img {
+				width: 100%;
+			}
+			
+			.mui-bar-nav {
+				box-shadow: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #FF0000;">
+			<h1 class="mui-title" style="color: #fff;">我的动态</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="head">
+				<img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=160151689,4157213533&fm=27&gp=0.jpg" />
+			</div>
+			<div class="portrait">
+				<div>魏小帅丶</div>
+				<img src="../images/brt.jpg" />
+			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" v-for="item in list">
+					<img class="headxiang mui-pull-left" :src="item.avatar" />
+					<div>
+						<span class="title_medium">{{item.author}}</span>
+					</div>
+					<P class="dark-medium" style="margin-left: 60px;margin-bottom: 10px;text-align: justify;">
+						{{item.title}}
+					</P>
+					<div class="post_list">
+						<div class="img_list" v-for="item in item.thumb">
+							<img :src="item.img" data-preview-src="" data-preview-group="1" />
+						</div>
+					</div>
+					<div class="gray-small" style="margin-left: 60px;">{{item.time}}</div>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var data_list = new Vue({
+			el: '#content',
+			data: {
+				list: []
+			}
+		})
+
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能
+			
+		});
+
+		mui.previewImage();
+			mui.getJSON('../index.json', {}, function(resp) {
+				data_list.list = resp.list
+				console.log(data_list.list)
+			})
+	</script>
+</html>
